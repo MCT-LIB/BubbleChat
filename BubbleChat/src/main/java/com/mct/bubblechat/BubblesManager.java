@@ -189,9 +189,10 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
 
     public void dispose() {
         mTrashView.detachFromWindow();
-        for (int i = mBubbles.size() - 1; i >= 0; i--) {
-            removeBubble(mBubbles.get(i));
+        for (BubbleLayout bubble : mBubbles) {
+            removeBubble(bubble);
         }
+        mBubbles.clear();
     }
 
     /**
@@ -272,6 +273,7 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
     public void onBubbleRelease() {
         if (isIntersect) {
             isIntersect = false;
+            mBubbles.remove(mTargetView);
             removeBubble(mTargetView);
         }
         mTrashView.setScaleTrashIcon(false);
@@ -339,7 +341,6 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
     }
 
     private void removeBubble(@NonNull BubbleLayout bubble) {
-        mBubbles.remove(bubble);
         bubble.detachFromWindow();
         bubble.notifyBubbleRemoved();
     }
