@@ -148,17 +148,16 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
         bubble.attachToWindow();
 
         if (mBubbles.isEmpty()) {
-            mTargetView = bubble;
             mWindowManager.addView(mObserverView, mObserverView.getWindowLayoutParams());
         } else {
             bubble.setUpdateTarget(mTargetView);
             mTargetView.setLayoutListener(null);
             mTargetView.setOnTouchListener(null);
-            mTargetView = bubble;
         }
         if (!mBubbles.contains(bubble)) {
             mBubbles.add(bubble);
         }
+        mTargetView = bubble;
         mTrashView.setTrashViewListener(this);
         mTrashView.detachFromWindow();
         mTrashView.attachToWindow();
@@ -191,6 +190,7 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
     }
 
     public void dispose() {
+        mWindowManager.removeViewImmediate(mObserverView);
         mTrashView.detachFromWindow();
         for (BubbleLayout bubble : mBubbles) {
             removeBubble(bubble);
