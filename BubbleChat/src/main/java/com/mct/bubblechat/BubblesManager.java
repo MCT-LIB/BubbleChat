@@ -18,6 +18,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.dynamicanimation.animation.SpringForce;
 
 import com.mct.bubblechat.BubbleTrash.AnimationState;
 import com.mct.touchutils.TouchUtils.FlingMoveToWallListener;
@@ -136,6 +137,8 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
         bubble.setLayoutListener(this);
         bubble.setOverMargin(options.overMargin);
         bubble.setInitCoords(options.initX, options.initY);
+        bubble.setMoveStiffness(options.moveStiffness);
+        bubble.setMoveDampingRatio(options.moveDampingRatio);
         bubble.setFlingMode(options.mode);
         bubble.setOnBubbleRemoveListener(options.bubbleRemoveListener);
         bubble.setOnClickListener(options.onClickListener);
@@ -387,6 +390,16 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
         public int floatingViewHeight;
 
         /**
+         * MoveStiffness
+         */
+        public float moveStiffness;
+
+        /**
+         * MoveDampingRatio
+         */
+        public float moveDampingRatio;
+
+        /**
          * Fling mode
          */
         public FlingMoveToWallListener.MoveMode mode;
@@ -410,6 +423,8 @@ public class BubblesManager implements BubbleLayoutListener, TrashViewListener, 
             initY = BubbleLayout.DEFAULT_Y;
             floatingViewWidth = BubbleLayout.DEFAULT_WIDTH;
             floatingViewHeight = BubbleLayout.DEFAULT_HEIGHT;
+            moveStiffness = SpringForce.STIFFNESS_MEDIUM;
+            moveDampingRatio = SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY;
             mode = FlingMoveToWallListener.MoveMode.Vertical;
         }
 

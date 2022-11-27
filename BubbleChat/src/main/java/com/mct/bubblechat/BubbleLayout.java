@@ -2,6 +2,7 @@ package com.mct.bubblechat;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -97,6 +98,16 @@ class BubbleLayout extends BubbleBaseLayout implements ViewTreeObserver.OnPreDra
     private int mInitY;
 
     /**
+     * MoveStiffness
+     */
+    public float mMoveStiffness;
+
+    /**
+     * MoveDampingRatio
+     */
+    public float mMoveDampingRatio;
+
+    /**
      * Fling mode
      */
     private FlingMoveToWallListener.MoveMode mMode;
@@ -181,7 +192,7 @@ class BubbleLayout extends BubbleBaseLayout implements ViewTreeObserver.OnPreDra
         // Get status bar height
         mBaseStatusBarHeight = getSystemUiDimensionPixelSize(resources, "status_bar_height");
         // Check landscape resource id
-        final int statusBarLandscapeResId = resources.getIdentifier("status_bar_height_landscape", "dimen", "android");
+        @SuppressLint({"DiscouragedApi", "InternalInsetResource"}) final int statusBarLandscapeResId = resources.getIdentifier("status_bar_height_landscape", "dimen", "android");
         if (statusBarLandscapeResId > 0) {
             mBaseStatusBarRotatedHeight = getSystemUiDimensionPixelSize(resources, "status_bar_height_landscape");
         } else {
@@ -281,7 +292,7 @@ class BubbleLayout extends BubbleBaseLayout implements ViewTreeObserver.OnPreDra
      */
     private static int getSystemUiDimensionPixelSize(@NonNull Resources resources, String resName) {
         int pixelSize = 0;
-        final int resId = resources.getIdentifier(resName, "dimen", "android");
+        @SuppressLint("DiscouragedApi") final int resId = resources.getIdentifier(resName, "dimen", "android");
         if (resId > 0) {
             pixelSize = resources.getDimensionPixelSize(resId);
         }
@@ -470,6 +481,14 @@ class BubbleLayout extends BubbleBaseLayout implements ViewTreeObserver.OnPreDra
         mInitY = initY;
     }
 
+    void setMoveStiffness(float moveStiffness) {
+        mMoveStiffness = moveStiffness;
+    }
+
+    void setMoveDampingRatio(float moveDampingRatio) {
+        mMoveDampingRatio = moveDampingRatio;
+    }
+
     void setFlingMode(FlingMoveToWallListener.MoveMode mode) {
         mMode = mode;
     }
@@ -592,12 +611,12 @@ class BubbleLayout extends BubbleBaseLayout implements ViewTreeObserver.OnPreDra
 
         @Override
         protected float getMoveStiffness() {
-            return 850;
+            return bubbleLayout.get().mMoveStiffness;
         }
 
         @Override
         protected float getMoveDampingRatio() {
-            return 0.85f;
+            return bubbleLayout.get().mMoveDampingRatio;
         }
 
         @NonNull
