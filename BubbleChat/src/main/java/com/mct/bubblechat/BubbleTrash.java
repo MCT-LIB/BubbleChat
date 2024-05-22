@@ -190,6 +190,7 @@ class BubbleTrash extends BubbleBaseLayout implements ViewTreeObserver.OnPreDraw
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
         mParams.format = PixelFormat.TRANSLUCENT;
         mParams.gravity = Gravity.START | Gravity.TOP;
+        mParams.alpha = 0.8f;
 
         setViewParams(mParams);
         // Various view settings
